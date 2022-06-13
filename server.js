@@ -30,12 +30,6 @@ app.use('/user', userRouter);
 var feedbackRouter = require('./routes/feedback.js');
 app.use('/feedback', feedbackRouter);
 
-var routeRouter = require('./routes/route.js');
-app.use('/route', routeRouter);
-
-var routeRouter = require('./routes/hault.js');
-app.use('/hault', routeRouter);
-
 var tripRouter = require('./routes/trip.js');
 app.use('/trip', tripRouter);
 
