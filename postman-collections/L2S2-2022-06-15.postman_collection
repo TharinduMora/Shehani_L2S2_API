@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "c0c21353-7e72-4ce4-99ea-5296a8aa78bc",
+		"name": "L2S2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Parent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3001/parent"
+			},
+			"response": []
+		},
+		{
+			"name": "trip add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Badulla Bandarawela\",\r\n    \"startTime\": \"07:00\",\r\n    \"repeat\": \"Daily\",\r\n    \"status\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/trip/add"
+			},
+			"response": []
+		},
+		{
+			"name": "hault add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Kosgas Handiya\",\r\n    \"timeSinceTripStart\":6,\r\n    \"location\": {\r\n        \"longitude\": 0.12342,\r\n        \"latitude\": 79.234123\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/trip/62a72e88d0ed0a424cb0fde2/hault/add"
+			},
+			"response": []
+		},
+		{
+			"name": "hault update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Muthiyangana Temple\",\r\n    \"timeSinceTripStart\":6,\r\n    \"location\": {\r\n        \"longitude\": 0.12342,\r\n        \"latitude\": 79.234123\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/trip/62a72e88d0ed0a424cb0fde2/hault/62a72f1ed0ed0a424cb0fde5/update"
+			},
+			"response": []
+		},
+		{
+			"name": "trip update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Badulla Springvalley\",\r\n    \"startTime\": \"08:00\",\r\n    \"repeat\": \"Weekdays\",\r\n    \"status\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/trip/62a72e88d0ed0a424cb0fde2/update"
+			},
+			"response": []
+		},
+		{
+			"name": "get-all trips",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/trip/get-all"
+			},
+			"response": []
+		},
+		{
+			"name": "get halts by trip id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/trip/62a72e88d0ed0a424cb0fde2/hault/get-all"
+			},
+			"response": []
+		},
+		{
+			"name": "trip search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/trip/search?maxDistance=100&longitude=6.984867&latitude=81.060816&time=01:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"trip",
+						"search"
+					],
+					"query": [
+						{
+							"key": "maxDistance",
+							"value": "100"
+						},
+						{
+							"key": "longitude",
+							"value": "6.984867"
+						},
+						{
+							"key": "latitude",
+							"value": "81.060816"
+						},
+						{
+							"key": "time",
+							"value": "01:00"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

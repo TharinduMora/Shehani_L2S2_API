@@ -13,4 +13,6 @@ router.route('/:id/hault/add').post(TripController.addHaults);
 
 router.route('/:id/hault/:haltId/update').put(TripController.updateHault);
 
+router.route('/search').get(TripController.search);
+
 module.exports = router;

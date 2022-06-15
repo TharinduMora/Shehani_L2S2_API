@@ -13,7 +13,8 @@ exports.add = async (req, res) => {
     const {
         name,
         startTime,
-        repeat
+        repeat,
+        status
     } = req.body;
     var startTimeInMins = getMinsByTime(startTime);
     if (!(repeat === 'Daily' || repeat === 'Weekdays' || repeat === 'Weekend')) {
@@ -23,7 +24,8 @@ exports.add = async (req, res) => {
     var newTrip = new Trip({
         name,
         startTime: startTimeInMins,
-        repeat
+        repeat,
+        status
     })
     newTrip.save().then((response) => {
         res.json(response);
@@ -37,7 +39,8 @@ exports.update = async (req, res) => {
     const {
         name,
         startTime,
-        repeat
+        repeat,
+        status
     } = req.body;
     var startTimeInMins = getMinsByTime(startTime);
     if (!(repeat === 'Daily' || repeat === 'Weekdays' || repeat === 'Weekend')) {
@@ -47,7 +50,8 @@ exports.update = async (req, res) => {
     var updateTrip = {
         name,
         startTime: startTimeInMins,
-        repeat
+        repeat,
+        status
     }
     Trip.findByIdAndUpdate(tripId, updateTrip).then((response) => {
         res.json(response);
@@ -140,9 +144,94 @@ exports.updateHault = async (req, res) => {
     });
 }
 
+exports.search = async (req, res) => {
+    const {
+        maxDistance,
+        longitude,
+        latitude,
+        time
+    } = req.query;
+    let repeat = ['Weekdays', 'Daily', 'Weekend'];
+
+    TripHault.aggregate([
+        [
+            {
+                '$geoNear': {
+                    'near': {
+                        'type': 'Point',
+                        'coordinates': [
+                            parseFloat(longitude), parseFloat(latitude)
+                        ]
+                    },
+                    'distanceField': 'distance',
+                    'maxDistance': parseFloat(maxDistance) || 1000,
+                    'query': {},
+                    'spherical': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'trips',
+                    'localField': 'tripId',
+                    'foreignField': '_id',
+                    'as': 'tripDetails'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$tripDetails'
+                }
+            }, {
+                '$addFields': {
+                    'time': {
+                        '$add': [
+                            '$timeSinceTripStart', '$tripDetails.startTime'
+                        ]
+                    },
+                    'repeat': '$tripDetails.repeat',
+                    'status': '$tripDetails.status'
+                }
+            }, {
+                '$match': {
+                    'time': {
+                        '$gte': getMinsByTime(time)
+                    },
+                    'repeat': {
+                        '$in': [
+                            ...repeat
+                        ]
+                    },
+                    'status': true
+                }
+            }, {
+                '$group': {
+                    '_id': '$tripId',
+                    'distance': {
+                        '$min': '$distance'
+                    },
+                    'location': {
+                        '$first': '$location'
+                    },
+                    'name': {
+                        '$first': '$name'
+                    },
+                    'haltId': {
+                        '$first': '$_id'
+                    },
+                    'time': {
+                        '$first': '$time'
+                    }
+                }
+            }
+        ]
+    ]).then((response) => {
+        res.json(response);
+    }).catch((err) => {
+        res.send(err);
+    });
+}
+
 function getMinsByTime(t) {
     try {
-        // 13:10  -> 1:10p
+        // 13:10  -> 1:10pm
         const myArray = t.substring(1).split(":");
         let h = parseInt(myArray[0]);
         let m = parseInt(myArray[1]);
