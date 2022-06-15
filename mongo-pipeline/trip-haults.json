@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "62a72e88d0ed0a424cb0fde2"
+  },
+  "distance": 36.95826131533681,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      6.984867,
+      81.060816
+    ]
+  },
+  "name": "Muthiyangana Hault",
+  "haltId": {
+    "$oid": "62a72f1ed0ed0a424cb0fde5"
+  },
+  "time": 486
+}]
