@@ -12,6 +12,7 @@ exports.getAll = async (req, res) => {
 exports.add = async (req, res) => {
     const {
         name,
+        vehicleId,
         startTime,
         repeat,
         status
@@ -23,6 +24,7 @@ exports.add = async (req, res) => {
     }
     var newTrip = new Trip({
         name,
+        vehicleId,
         startTime: startTimeInMins,
         repeat,
         status
@@ -38,6 +40,7 @@ exports.update = async (req, res) => {
     const tripId = req.params.id;
     const {
         name,
+        vehicleId,
         startTime,
         repeat,
         status
@@ -49,6 +52,7 @@ exports.update = async (req, res) => {
     }
     var updateTrip = {
         name,
+        vehicleId,
         startTime: startTimeInMins,
         repeat,
         status
@@ -218,7 +222,23 @@ exports.search = async (req, res) => {
                     },
                     'time': {
                         '$first': '$time'
+                    },
+                    'vehicleId': {
+                        '$first': '$tripDetails.vehicleId'
                     }
+                }
+            },
+            {
+                '$lookup': {
+                    'from': 'vehicles',
+                    'localField': 'vehicleId',
+                    'foreignField': '_id',
+                    'as': 'vehicle'
+                }
+            },
+            {
+                '$unwind': {
+                    'path': '$vehicle'
                 }
             }
         ]

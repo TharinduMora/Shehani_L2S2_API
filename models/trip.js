@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var tripSchema = new Schema({
     name: { type: String, required: true },
-    // routeId: { type: Schema.Types.ObjectId, ref: 'Route' },
+    vehicleId: { type: Schema.Types.ObjectId, ref: 'Vehicle' },
     startTime: { type: Number, required: true },
     repeat: { type: String, required: true }, // daily , weekdays , weekends
     status: { type: Boolean, required: true, default: true }
